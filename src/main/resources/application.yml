@@ -1,0 +1,27 @@
+#admin.view.field.grid.column.annotation=com.spring.vaadin.cms.annotation.ColumnDisplayGrid
+admin:
+  view:
+    annotation:
+      entity.field:
+        grid:
+          column:
+            class: com.office.grabber.frontend.configuration.annotation.ColumnDisplayGrid
+            order.method: displayOrder
+
+        edit.form:
+          column:
+            class: com.office.grabber.frontend.configuration.annotation.ColumnEditForm
+            order.method: displayOrder
+logging:
+  level:
+    root: info
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1234
+
+  jpa:
+    generate-ddl: true
