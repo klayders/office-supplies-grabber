@@ -5,6 +5,7 @@ import com.office.grabber.backend.repository.ProductRepository;
 import com.office.grabber.frontend.configuration.AbstractEditEntityForm;
 import com.office.grabber.frontend.configuration.EntityAnnotationParser;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -34,7 +35,10 @@ public class ProductListView extends VerticalLayout {
 
   private final IntegerField countRowsPerPage = new IntegerField("Число записей на странице", 10, event -> updateList());
   private final IntegerField pageRows = new IntegerField("Текущая страница", 0, event -> updateList());
-  private final IntegerField totalPage = new IntegerField("Всего страниц", 0, event -> updateList());
+  private final IntegerField totalPage = new IntegerField("Всего страниц");
+
+  private final Checkbox pencilExpensivePrice = new Checkbox("Дорогие товары карандаша", event -> updateList());
+  private final Checkbox kancmirExpensivePrice = new Checkbox("Дорогие товары канцмир", event -> updateList());
 
 
   public ProductListView(ApplicationContext applicationContext,
@@ -89,7 +93,15 @@ public class ProductListView extends VerticalLayout {
 
     var createEntityButton = new Button("Создать", click -> createEntity());
 
-    var toolBar = new HorizontalLayout(pageRows, countRowsPerPage, totalPage, createEntityButton);
+    var toolBar = new HorizontalLayout(
+        pageRows,
+        countRowsPerPage,
+        totalPage,
+        pencilExpensivePrice,
+        kancmirExpensivePrice,
+        createEntityButton
+    );
+
     toolBar.setClassName("toolbar");
 
     return toolBar;
@@ -132,7 +144,11 @@ public class ProductListView extends VerticalLayout {
   }
 
   private void updateList() {
-    var all = repository.findAll(PageRequest.of(pageRows.getValue(), countRowsPerPage.getValue()));
+    var all = repository.findAllByCurrentInflatedPriceAndAndConcurrentInflatedPrice(
+        PageRequest.of(pageRows.getValue(), countRowsPerPage.getValue()),
+        pencilExpensivePrice.getValue(),
+        kancmirExpensivePrice.getValue()
+    );
 
     totalPage.setValue(all.getTotalPages());
 

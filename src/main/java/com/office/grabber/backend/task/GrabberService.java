@@ -27,9 +27,9 @@ public class GrabberService {
   private final RestTemplate restTemplate;
   private final ProductRepository productRepository;
 
-  private static int section = 600;
+  private static int section = 0;
   private static int offset = 0;
-  private static int limit = 1000;
+  private static int limit = 100;
 
   public void startingGrabbing(SiteConfig polunin, SiteConfig concurrent) {
     while (section <= 100_000) {
