@@ -13,7 +13,7 @@ import com.vaadin.flow.router.RouterLink;
 
 
 //помоему эта страница использует дефолтный роутинг - localhost:8080/
-@CssImport("./styles/shared-styles.css")
+@CssImport("frontend://styles/shared-styles.css")
 public class MainLayout extends AppLayout {
 
 
