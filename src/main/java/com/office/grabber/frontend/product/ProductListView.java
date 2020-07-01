@@ -5,6 +5,7 @@ import com.office.grabber.backend.model.Product;
 import com.office.grabber.backend.repository.ProductRepository;
 import com.office.grabber.frontend.configuration.AbstractEditEntityForm;
 import com.office.grabber.frontend.configuration.EntityAnnotationParser;
+import com.office.grabber.frontend.main.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
@@ -29,8 +30,8 @@ import org.springframework.data.domain.PageRequest;
 import org.vaadin.olli.FileDownloadWrapper;
 
 
-@Route("products")
 @PageTitle("Каталог продуктов")
+@Route(value = "products", layout = MainLayout.class)
 public class ProductListView extends VerticalLayout {
 
   private final ApplicationContext applicationContext;
@@ -48,7 +49,7 @@ public class ProductListView extends VerticalLayout {
   private final Checkbox pencilExpensivePrice = new Checkbox("Дорогие товары карандаша", event -> updateList());
   private final Checkbox kancmirExpensivePrice = new Checkbox("Дорогие товары канцмир", event -> updateList());
 
-  private final Button button = new Button("Click to download", event -> loadFile());
+  private final Button button = new Button("Выгрузить данные из бд", event -> loadXlsxFile());
 
 
   public ProductListView(ApplicationContext applicationContext,
@@ -168,7 +169,7 @@ public class ProductListView extends VerticalLayout {
     entityGrid.setItems(all.getContent());
   }
 
-  private void loadFile() {
+  private void loadXlsxFile() {
 
     final var allProducts = repository.findAll();
 

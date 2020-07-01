@@ -1,10 +1,10 @@
 package com.office.grabber.frontend.siteconfig;
 
-import com.office.grabber.backend.model.Product;
 import com.office.grabber.backend.model.SiteConfig;
 import com.office.grabber.backend.repository.SiteConfigRepository;
 import com.office.grabber.frontend.configuration.AbstractEditEntityForm;
 import com.office.grabber.frontend.configuration.EntityAnnotationParser;
+import com.office.grabber.frontend.main.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 import org.springframework.context.ApplicationContext;
 
 
-@Route("site-config")
+@Route(value = "site-config", layout = MainLayout.class)
 @PageTitle("Католог продуктов")
 public class SiteConfigListView extends VerticalLayout {
 
