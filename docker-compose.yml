@@ -3,17 +3,20 @@ version: '2.0'
 services:
 
   grabber:
-    image: matrocob/grabber:1.0.0-SNAPSHOT
-#    restart: always
+    image: matrocob/grabber:1.0.2-SNAPSHOT
+    restart: always
     ports:
       - 8080:8080
+    links:
+      - "postgres-grabber"
+    depends_on:
+      - postgres-grabber
 
-
-#  db:
-#    image: postgres
-#    restart: always
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=1234
-#    ports:
-#      - 5432:5432
+  postgres-grabber:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+    ports:
+      - 5432:5432
