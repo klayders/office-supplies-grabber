@@ -19,7 +19,7 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:postgresql://94.130.78.245:5432/postgres
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: 1234
 

@@ -1,5 +1,6 @@
 package com.office.grabber.frontend.product;
 
+import com.office.grabber.backend.file.FileLoaderXlsx;
 import com.office.grabber.backend.model.Product;
 import com.office.grabber.backend.repository.ProductRepository;
 import com.office.grabber.frontend.configuration.AbstractEditEntityForm;
@@ -14,12 +15,18 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.StreamResource;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 import java.util.stream.Stream;
+import org.apache.commons.io.FileUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.PageRequest;
+import org.vaadin.olli.FileDownloadWrapper;
 
 
 @Route("products")
@@ -30,6 +37,7 @@ public class ProductListView extends VerticalLayout {
   private final AbstractEditEntityForm<Product> entityForm;
   private final ProductRepository repository;
   private final EntityAnnotationParser entityAnnotationParser;
+  private final FileLoaderXlsx fileLoaderXlsx;
 
   private final Grid<Product> entityGrid = new Grid<>(Product.class);
 
@@ -40,13 +48,17 @@ public class ProductListView extends VerticalLayout {
   private final Checkbox pencilExpensivePrice = new Checkbox("Дорогие товары карандаша", event -> updateList());
   private final Checkbox kancmirExpensivePrice = new Checkbox("Дорогие товары канцмир", event -> updateList());
 
+  private final Button button = new Button("Click to download", event -> loadFile());
+
 
   public ProductListView(ApplicationContext applicationContext,
                          ProductRepository repository,
-                         EntityAnnotationParser entityAnnotationParser) {
+                         EntityAnnotationParser entityAnnotationParser,
+                         FileLoaderXlsx fileLoaderXlsx) {
     this.applicationContext = applicationContext;
     this.repository = repository;
     this.entityAnnotationParser = entityAnnotationParser;
+    this.fileLoaderXlsx = fileLoaderXlsx;
 
     this.entityForm = new AbstractEditEntityForm<>(
         this.applicationContext,
@@ -99,6 +111,7 @@ public class ProductListView extends VerticalLayout {
         totalPage,
         pencilExpensivePrice,
         kancmirExpensivePrice,
+        button,
         createEntityButton
     );
 
@@ -112,7 +125,7 @@ public class ProductListView extends VerticalLayout {
     entityGrid.addClassName("main-grid");
     entityGrid.setSizeFull();
 
-       var gridFields = Stream.of(Product.class.getDeclaredFields())
+    var gridFields = Stream.of(Product.class.getDeclaredFields())
         .filter(field -> field.getAnnotation(entityAnnotationParser.annotationGridColumn()) != null)
         .sorted((field1, field2) -> {
           var annotation1 = field1.getAnnotation(entityAnnotationParser.annotationGridColumn());
@@ -153,6 +166,27 @@ public class ProductListView extends VerticalLayout {
     totalPage.setValue(all.getTotalPages());
 
     entityGrid.setItems(all.getContent());
+  }
+
+  private void loadFile() {
+
+    final var allProducts = repository.findAll();
+
+    final File file = fileLoaderXlsx.generatedProductFile(allProducts);
+
+    FileDownloadWrapper buttonWrapper = new FileDownloadWrapper(
+        new StreamResource(file.getName(), () -> {
+          try {
+            return new ByteArrayInputStream(FileUtils.readFileToByteArray(file));
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          return null;
+        })
+    );
+
+    buttonWrapper.wrapComponent(button);
+    add(buttonWrapper);
   }
 
   private void createEntity() {

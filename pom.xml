@@ -75,6 +75,25 @@
       <version>1.0</version>
     </dependency>
 
+    <!--FILE_DOWNLOAD_XLSX-->
+    <!-- https://mvnrepository.com/artifact/org.vaadin.olli/file-download-wrapper -->
+    <dependency>
+      <groupId>org.vaadin.olli</groupId>
+      <artifactId>file-download-wrapper</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>4.1.2</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>4.1.2</version>
+    </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -87,6 +106,13 @@
       <optional>true</optional>
     </dependency>
 
+
+    <!-- https://mvnrepository.com/artifact/com.vaadin/vaadin-server -->
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-server</artifactId>
+      <version>8.11.0</version>
+    </dependency>
 
 
     <!--TEST-->
@@ -115,7 +141,14 @@
     </dependencies>
   </dependencyManagement>
 
+  <repositories>
+    <repository>
+      <id>vaadin-repo</id>
+      <name>Vaadin addons</name>
+      <url>http://vaadin.com/nexus/content/repositories/vaadin-addons/</url>
+    </repository>
 
+  </repositories>
 
   <build>
     <plugins>
