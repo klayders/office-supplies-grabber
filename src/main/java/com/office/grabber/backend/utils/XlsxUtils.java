@@ -55,7 +55,7 @@ public class XlsxUtils {
       cell.setCellValue(seasonTicketReservation.getCurrentPrice());
 
       cell = row.createCell(6);
-      cell.setCellValue(seasonTicketReservation.getCurrentPrice());
+      cell.setCellValue(seasonTicketReservation.getConcurrentPrice());
 
       cell = row.createCell(7);
       cell.setCellValue(seasonTicketReservation.isCurrentInflatedPrice());
