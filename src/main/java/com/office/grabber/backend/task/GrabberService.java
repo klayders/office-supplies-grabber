@@ -29,7 +29,7 @@ public class GrabberService {
 
   private static int section = 0;
   private static int offset = 0;
-  private static int limit = 100;
+  private static int limit = 5000;
 
   public void startingGrabbing(SiteConfig polunin, SiteConfig concurrent) {
     while (section <= 100_000) {
